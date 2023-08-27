@@ -1,2 +1,4 @@
 ---
-# defaults file for ssh
+ssh_port: 22
+ssh_allow_password_auth: true
+ssh_allow_root_login: true
