@@ -1,0 +1,18 @@
+---
+driver:
+  name: podman
+platforms:
+  - name: debian
+    image: docker.io/geerlingguy/docker-debian12-ansible
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    command: "/lib/systemd/systemd"
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
