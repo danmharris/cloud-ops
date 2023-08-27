@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  pre_tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+  roles:
+    - danmharris.ssh
