@@ -6,14 +6,20 @@ flush ruleset
 
 table inet filter {
     chain input {
-        type filter hook input priority filter; policy accept;
+        type filter hook input priority filter; policy {{ nftables_input_policy }};
+
+        include "/etc/nftables.d/rules-input/*.conf"
     }
 
     chain forward {
         type filter hook forward priority filter; policy accept;
+
+        include "/etc/nftables.d/rules-forward/*.conf"
     }
 
     chain output {
         type filter hook output priority filter; policy accept;
+
+        include "/etc/nftables.d/rules-output/*.conf"
     }
 }

@@ -1,2 +1,6 @@
 ---
-# defaults file for nftables
+nftables_input_policy: accept
+nftables_input_manage_state_rules: false
+nftables_input_allow_icmp: false
+nftables_input_allow_ssh: false
+nftables_ssh_port: 22

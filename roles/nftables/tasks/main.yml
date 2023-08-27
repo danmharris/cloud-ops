@@ -4,6 +4,56 @@
     name: nftables
     state: present
 
+- name: Create config directory
+  ansible.builtin.file:
+    path: /etc/nftables.d
+    mode: '0755'
+    owner: root
+    group: root
+    state: directory
+
+- name: Create rule directories
+  ansible.builtin.file:
+    path: "/etc/nftables.d/rules-{{ item }}"
+    mode: '0755'
+    owner: root
+    group: root
+    state: directory
+  loop:
+    - input
+    - forward
+    - output
+
+- name: Add state rules
+  ansible.builtin.copy:
+    src: rules-input/state.conf
+    dest: /etc/nftables.d/rules-input/state.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart nftables
+  when: nftables_input_manage_state_rules
+
+- name: Add icmp rules
+  ansible.builtin.copy:
+    src: rules-input/icmp.conf
+    dest: /etc/nftables.d/rules-input/icmp.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart nftables
+  when: nftables_input_allow_icmp
+
+- name: Add ssh rule
+  ansible.builtin.template:
+    src: rules-input/ssh.conf.j2
+    dest: /etc/nftables.d/rules-input/ssh.conf
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart nftables
+  when: nftables_input_allow_ssh
+
 - name: Install config
   ansible.builtin.template:
     src: nftables.conf.j2
