@@ -1,0 +1,26 @@
+---
+- name: Install fail2ban package
+  ansible.builtin.package:
+    name: fail2ban
+    state: present
+
+- name: Remove default config
+  ansible.builtin.file:
+    path: /etc/fail2ban/jail.d/defaults-debian.conf
+    state: absent
+  notify: Restart fail2ban
+
+- name: Add config
+  ansible.builtin.template:
+    src: jail.local.j2
+    dest: /etc/fail2ban/jail.local
+    mode: '0644'
+    owner: root
+    group: root
+  notify: Restart fail2ban
+
+- name: Enable and start service
+  ansible.builtin.service:
+    name: fail2ban
+    state: started
+    enabled: true

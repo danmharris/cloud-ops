@@ -1,0 +1,3 @@
+---
+fail2ban_banaction: nftables
+fail2ban_jails: []

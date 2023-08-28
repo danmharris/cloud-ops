@@ -1,0 +1,14 @@
+{{ ansible_managed | comment }}
+
+[DEFAULT]
+banaction = {{ fail2ban_banaction }}-multiport
+banaction_allports = {{ fail2ban_banaction }}-allports
+
+{% for jail in fail2ban_jails -%}
+[{{ jail['name'] }}]
+  enabled = true
+  backend = {{ jail['backend'] | default('auto') }}
+  {% if 'port' in jail -%}
+  port = {{ jail['port'] }}
+  {% endif -%}
+{% endfor -%}
